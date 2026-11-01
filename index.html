@@ -39,6 +39,11 @@
   .ex .exuk{color:var(--muted);font-size:15px;margin-top:6px;font-weight:300}
   .asoc{margin-top:10px;padding:12px 16px;border-left:3px solid var(--emerald);border-radius:0;font-size:15px;line-height:1.45;color:var(--ink)}
   .asoc span{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--emerald);font-weight:500;margin-bottom:4px}
+  .chart{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;align-items:end;height:64px}
+  .chart div{background:var(--emerald-soft);border-radius:4px 4px 2px 2px;position:relative;min-height:3px}
+  .chart div.on{background:var(--emerald)}
+  .chart div.today{outline:2px solid var(--emerald);outline-offset:1px}
+  .chart div i{position:absolute;top:-16px;left:0;right:0;text-align:center;font-style:normal;font-size:10px;color:var(--muted)}
   .hidden{display:none !important}
   .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
   button{font-family:Rubik,sans-serif;font-size:17px;font-weight:500;border:0;border-radius:16px;padding:16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -72,6 +77,11 @@
   <div class="stat"><b id="s-new">0</b><span>нових сьогодні</span></div>
   <div class="stat"><b id="s-due">0</b><span>на повторення</span></div>
   <div class="stat"><b id="s-known">0</b><span>вивчено</span></div>
+</section>
+
+<section class="card" id="chart-card" style="padding:16px 18px">
+  <div class="tag" style="margin-bottom:8px"><span>Вивчено за 14 днів</span><span id="chart-total"></span></div>
+  <div class="chart" id="chart"></div>
 </section>
 
 <main class="card" id="card">
@@ -140,7 +150,14 @@ function dueCards(){
   return Object.values(state.cards).filter(c => c.due <= t && !c.retired).sort((a,b)=>a.due-b.due);
 }
 function newToday(){ return (state.log[todayKey()] && state.log[todayKey()].new) || 0; }
-function bumpLog(field){ const k = todayKey(); state.log[k] = state.log[k] || {new:0, rev:0}; state.log[k][field]++; }
+function bumpLog(field){ const k = todayKey(); state.log[k] = state.log[k] || {new:0, rev:0, ok:0}; state.log[k][field] = (state.log[k][field]||0) + 1; }
+function renderChart(){
+  const el = document.getElementById('chart'); el.innerHTML = '';
+  let total = 0, max = 1; const days = [];
+  for (let i = 13; i >= 0; i--){ const k = new Date(today() - i*DAY).toISOString().slice(0,10); const v = (state.log[k] && state.log[k].ok) || 0; days.push({k, v}); total += v; max = Math.max(max, v); }
+  days.forEach((d, i) => { const b = document.createElement('div'); b.style.height = Math.max(3, Math.round(d.v / max * 48)) + 'px'; if (d.v) { b.className = 'on'; b.innerHTML = '<i>' + d.v + '</i>'; } if (i === 13) b.classList.add('today'); b.title = d.k; el.appendChild(b); });
+  document.getElementById('chart-total').textContent = total + ' слів';
+}
 
 function pickNext(){
   const due = dueCards();
@@ -162,6 +179,7 @@ function render(){
   document.getElementById('s-due').textContent = dueCards().length;
   document.getElementById('s-known').textContent = known;
 
+  renderChart();
   current = pickNext();
   const card = document.getElementById('card'), done = document.getElementById('done');
   if (!current){ card.classList.add('hidden'); done.classList.remove('hidden'); return; }
@@ -188,6 +206,7 @@ function grade(ok){
   let c = state.cards[id];
   if (!c){ c = state.cards[id] = {id, step:0, due:0, seen:0}; bumpLog('new'); } else { bumpLog('rev'); }
   c.seen++;
+  if (ok) bumpLog('ok');
   if (ok){ c.step = Math.min(c.step + 1, INTERVALS.length); c.due = today() + INTERVALS[Math.min(c.step-1, INTERVALS.length-1)] * DAY; if (c.step >= INTERVALS.length) c.retired = true; }
   else { c.step = 0; c.due = today() + DAY; }
   save(); render();
@@ -220,7 +239,16 @@ document.getElementById('show-list').onclick = () => {
 const standalone = window.navigator.standalone || matchMedia('(display-mode: standalone)').matches;
 if (!standalone && /iPhone|iPad/.test(navigator.userAgent)) document.getElementById('install').classList.remove('hidden');
 
-fetch('words.json?v=' + Date.now()).then(r => r.json()).then(j => { data = j; render(); })
+function gradeFromUrl(){
+  const q = new URLSearchParams(location.search); const id = +q.get('id'); const g = q.get('grade');
+  if (!id || !g || !data.words.find(w => w.id === id)) return;
+  const k = 'graded-' + id + '-' + todayKey();
+  if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, '1');
+  current = {word: data.words.find(w => w.id === id), isNew: !state.cards[id]};
+  grade(g === 'ok');
+  history.replaceState(null, '', location.pathname);
+}
+fetch('words.json?v=' + Date.now()).then(r => r.json()).then(j => { data = j; render(); gradeFromUrl(); })
   .catch(() => { document.getElementById('en').textContent = 'Не вдалося завантажити слова'; });
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');

@@ -36,6 +36,8 @@ n.title = nw.en + " - " + nw.uk;
 n.subtitle = nw.ex;
 n.body = nw.asoc ? "💡 " + nw.asoc : "";
 n.openURL = URL_APP;
+n.addAction("Знаю ✓", URL_APP + "?id=" + nw.id + "&grade=ok", false);
+n.addAction("Ще раз", URL_APP + "?id=" + nw.id + "&grade=again", false);
 n.setTriggerDate(next);
 await n.schedule();
 
