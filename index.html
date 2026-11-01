@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Слово дня</title>
+<meta name="description" content="Одне англійське слово чи фраза щодня з українським перекладом, прикладом і повторенням.">
+<meta name="theme-color" content="#1E4D3F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Слово дня">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Rubik:wght@300;400;500&display=swap">
+<style>
+  :root{
+    --bg:#F6F5F1; --card:#FFFFFF; --ink:#111111; --muted:#5E655F; --line:#E3E4DE;
+    --emerald:#1E4D3F; --emerald-soft:#E6EFEA; --ok:#1E4D3F; --again:#8A3B2E;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0F1412; --card:#171E1B; --ink:#F2F2EE; --muted:#9BA69F; --line:#2A332E;
+      --emerald:#5FB08F; --emerald-soft:#1B2A24;
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Rubik,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{min-height:100dvh;padding:calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 20px);display:flex;flex-direction:column;gap:14px;max-width:560px;margin:0 auto}
+  header{display:flex;justify-content:space-between;align-items:center}
+  header h1{font-family:Unbounded,sans-serif;font-weight:700;font-size:18px;margin:0;letter-spacing:-.01em}
+  .pill{font-size:13px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px 22px;box-shadow:0 8px 30px rgba(0,0,0,.05)}
+  .tag{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--emerald);font-weight:500;display:flex;justify-content:space-between;align-items:center}
+  .en{font-family:Unbounded,sans-serif;font-weight:700;font-size:30px;line-height:1.15;margin:14px 0 6px;letter-spacing:-.02em}
+  .uk{font-size:19px;color:var(--ink);font-weight:300;margin:0 0 18px}
+  .ex{background:var(--emerald-soft);border-radius:14px;padding:14px 16px;font-size:17px;line-height:1.45}
+  .ex .exuk{color:var(--muted);font-size:15px;margin-top:6px;font-weight:300}
+  .hidden{display:none !important}
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+  button{font-family:Rubik,sans-serif;font-size:17px;font-weight:500;border:0;border-radius:16px;padding:16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .btn-ok{background:var(--emerald);color:#fff}
+  .btn-again{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+  .btn-reveal{background:var(--ink);color:var(--bg);width:100%;margin-top:16px}
+  .ghost{background:transparent;color:var(--muted);font-size:15px;padding:10px;border:0}
+  .speak{background:var(--emerald-soft);color:var(--emerald);border-radius:999px;width:40px;height:40px;padding:0;font-size:18px;display:grid;place-items:center}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+  .stat b{display:block;font-family:Unbounded,sans-serif;font-size:20px;font-weight:700}
+  .stat span{font-size:12px;color:var(--muted)}
+  .small{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
+  .install{background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:14px 16px;font-size:14px;line-height:1.5}
+  .install b{color:var(--emerald)}
+  .done{text-align:center;padding:34px 20px}
+  .done .en{font-size:24px}
+  .list{display:flex;flex-direction:column;gap:6px;max-height:40dvh;overflow:auto}
+  .list div{display:flex;justify-content:space-between;gap:10px;font-size:15px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .list small{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Слово дня</h1>
+  <span class="pill" id="date"></span>
+</header>
+
+<section class="stats">
+  <div class="stat"><b id="s-new">0</b><span>нових сьогодні</span></div>
+  <div class="stat"><b id="s-due">0</b><span>на повторення</span></div>
+  <div class="stat"><b id="s-known">0</b><span>вивчено</span></div>
+</section>
+
+<main class="card" id="card">
+  <div class="tag"><span id="tag"></span><button class="speak" id="speak" aria-label="Озвучити">🔊</button></div>
+  <div class="en" id="en"></div>
+  <div class="uk" id="uk"></div>
+  <div class="ex" id="ex"><div id="exen"></div><div class="exuk" id="exuk"></div></div>
+  <button class="btn-reveal" id="reveal">Показати переклад</button>
+  <div class="actions hidden" id="actions">
+    <button class="btn-again" id="again">Ще раз</button>
+    <button class="btn-ok" id="ok">Знаю</button>
+  </div>
+</main>
+
+<main class="card done hidden" id="done">
+  <div class="tag">На сьогодні все</div>
+  <div class="en">Well done!</div>
+  <p class="uk">Наступні слова прийдуть завтра. Хочеш ще одне нове?</p>
+  <button class="btn-ok" id="one-more">Ще одне слово</button>
+</main>
+
+<div class="row">
+  <button class="ghost" id="show-list">Усі слова</button>
+  <button class="ghost" id="reset">Скинути прогрес</button>
+</div>
+
+<section class="card hidden" id="list-card">
+  <div class="tag" style="margin-bottom:10px">Список <span id="list-count"></span></div>
+  <div class="list" id="list"></div>
+</section>
+
+<section class="install hidden" id="install">
+  <b>Додати на екран:</b> у Safari натисни «Поділитись» (квадрат зі стрілкою) → <b>На Початковий екран</b> → Додати. Далі слово дня відкривається з іконки, як застосунок.
+</section>
+
+<p class="small">Повторення за інтервалами: 1 → 3 → 7 → 14 → 30 днів. «Ще раз» повертає слово на завтра.</p>
+
+<script>
+const KEY = 'slovo-dnia-v1';
+const NEW_PER_DAY = 3;
+const INTERVALS = [1, 3, 7, 14, 30, 60];
+let data = {words: []};
+let state = load();
+let current = null;
+let extraNew = 0;
+
+function load(){ try { return JSON.parse(localStorage.getItem(KEY)) || {cards:{}, log:{}}; } catch(e){ return {cards:{}, log:{}}; } }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+function today(){ const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime(); }
+const DAY = 86400000;
+function todayKey(){ return new Date(today()).toISOString().slice(0,10); }
+
+// Детермінований порядок нових слів: сталий для словника, щоб віджет і застосунок давали однакове слово дня.
+function seededOrder(n, seed){
+  const arr = [...Array(n).keys()];
+  let s = seed;
+  for (let i = n-1; i > 0; i--){ s = (s*9301 + 49297) % 233280; const j = Math.floor(s/233280*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+  return arr;
+}
+function dayIndex(){ return Math.floor(today()/DAY); }
+function wordOfTheDay(){ const order = seededOrder(data.words.length, 2027); return data.words[order[dayIndex() % data.words.length]]; }
+
+function dueCards(){
+  const t = today();
+  return Object.values(state.cards).filter(c => c.due <= t && !c.retired).sort((a,b)=>a.due-b.due);
+}
+function newToday(){ return (state.log[todayKey()] && state.log[todayKey()].new) || 0; }
+function bumpLog(field){ const k = todayKey(); state.log[k] = state.log[k] || {new:0, rev:0}; state.log[k][field]++; }
+
+function pickNext(){
+  const due = dueCards();
+  if (due.length) return {word: data.words.find(w => w.id === due[0].id), card: due[0], isNew:false};
+  if (newToday() < NEW_PER_DAY + extraNew){
+    // спершу слово дня, якщо ще не бачене
+    const wod = wordOfTheDay();
+    if (!state.cards[wod.id]) return {word: wod, isNew:true};
+    const order = seededOrder(data.words.length, 2027);
+    for (const i of order){ const w = data.words[i]; if (!state.cards[w.id]) return {word: w, isNew:true}; }
+  }
+  return null;
+}
+
+function render(){
+  document.getElementById('date').textContent = new Date().toLocaleDateString('uk-UA', {day:'numeric', month:'long'});
+  const known = Object.values(state.cards).filter(c => c.step >= 3).length;
+  document.getElementById('s-new').textContent = newToday();
+  document.getElementById('s-due').textContent = dueCards().length;
+  document.getElementById('s-known').textContent = known;
+
+  current = pickNext();
+  const card = document.getElementById('card'), done = document.getElementById('done');
+  if (!current){ card.classList.add('hidden'); done.classList.remove('hidden'); return; }
+  card.classList.remove('hidden'); done.classList.add('hidden');
+  const w = current.word;
+  document.getElementById('tag').textContent = (current.isNew ? 'нове · ' : 'повторення · ') + w.tag;
+  document.getElementById('en').textContent = w.en;
+  document.getElementById('uk').textContent = w.uk;
+  document.getElementById('exen').textContent = w.ex;
+  document.getElementById('exuk').textContent = w.ex_uk;
+  const revealed = current.isNew;
+  document.getElementById('uk').classList.toggle('hidden', !revealed);
+  document.getElementById('ex').classList.toggle('hidden', !revealed);
+  document.getElementById('reveal').classList.toggle('hidden', revealed);
+  document.getElementById('actions').classList.toggle('hidden', !revealed);
+}
+
+function grade(ok){
+  if (!current) return;
+  const id = current.word.id;
+  let c = state.cards[id];
+  if (!c){ c = state.cards[id] = {id, step:0, due:0, seen:0}; bumpLog('new'); } else { bumpLog('rev'); }
+  c.seen++;
+  if (ok){ c.step = Math.min(c.step + 1, INTERVALS.length); c.due = today() + INTERVALS[Math.min(c.step-1, INTERVALS.length-1)] * DAY; if (c.step >= INTERVALS.length) c.retired = true; }
+  else { c.step = 0; c.due = today() + DAY; }
+  save(); render();
+}
+
+function speak(text){
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.rate = 0.92;
+  const v = speechSynthesis.getVoices().find(v => v.lang.startsWith('en') && /Samantha|Google US|Ava|Allison/.test(v.name)) || speechSynthesis.getVoices().find(v => v.lang.startsWith('en'));
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+
+document.getElementById('reveal').onclick = () => { ['uk','ex','actions'].forEach(i => document.getElementById(i).classList.remove('hidden')); document.getElementById('reveal').classList.add('hidden'); };
+document.getElementById('ok').onclick = () => grade(true);
+document.getElementById('again').onclick = () => grade(false);
+document.getElementById('speak').onclick = () => current && speak(current.word.en + '. ' + current.word.ex);
+document.getElementById('one-more').onclick = () => { extraNew++; render(); };
+document.getElementById('reset').onclick = () => { if (confirm('Скинути весь прогрес повторень?')) { state = {cards:{}, log:{}}; save(); render(); } };
+document.getElementById('show-list').onclick = () => {
+  const lc = document.getElementById('list-card'); lc.classList.toggle('hidden');
+  const el = document.getElementById('list'); el.innerHTML = '';
+  document.getElementById('list-count').textContent = data.words.length;
+  data.words.forEach(w => { const c = state.cards[w.id]; const d = document.createElement('div');
+    d.innerHTML = `<span>${w.en}</span><small>${c ? (c.retired ? 'вивчено' : 'крок ' + c.step) : '—'}</small>`; el.appendChild(d); });
+};
+
+// Підказка про встановлення лише в Safari, поки не на домашньому екрані
+const standalone = window.navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+if (!standalone && /iPhone|iPad/.test(navigator.userAgent)) document.getElementById('install').classList.remove('hidden');
+
+fetch('words.json?v=' + Date.now()).then(r => r.json()).then(j => { data = j; render(); })
+  .catch(() => { document.getElementById('en').textContent = 'Не вдалося завантажити слова'; });
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
