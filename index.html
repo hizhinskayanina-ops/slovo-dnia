@@ -156,7 +156,8 @@ function renderChart(){
   let total = 0, max = 1; const days = [];
   for (let i = 13; i >= 0; i--){ const k = new Date(today() - i*DAY).toISOString().slice(0,10); const v = (state.log[k] && state.log[k].ok) || 0; days.push({k, v}); total += v; max = Math.max(max, v); }
   days.forEach((d, i) => { const b = document.createElement('div'); b.style.height = Math.max(3, Math.round(d.v / max * 48)) + 'px'; if (d.v) { b.className = 'on'; b.innerHTML = '<i>' + d.v + '</i>'; } if (i === 13) b.classList.add('today'); b.title = d.k; el.appendChild(b); });
-  document.getElementById('chart-total').textContent = total + ' слів';
+  const n10 = total % 10, n100 = total % 100; const word = (n10 === 1 && n100 !== 11) ? 'слово' : (n10 >= 2 && n10 <= 4 && (n100 < 10 || n100 >= 20)) ? 'слова' : 'слів';
+  document.getElementById('chart-total').textContent = total + ' ' + word;
 }
 
 function pickNext(){
