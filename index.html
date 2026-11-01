@@ -118,11 +118,11 @@
   <b>Додати на екран:</b> у Safari натисни «Поділитись» (квадрат зі стрілкою) → <b>На Початковий екран</b> → Додати. Далі слово дня відкривається з іконки, як застосунок.
 </section>
 
-<p class="small">Повторення за інтервалами: 1 → 3 → 7 → 14 → 30 днів. «Ще раз» повертає слово на завтра.</p>
+<p class="small">Нове слово у віджеті й сповіщеннях кожні 30 хвилин, до 40 нових на день тут. Повторення за інтервалами: 1 → 3 → 7 → 14 → 30 днів. «Ще раз» повертає слово на завтра.</p>
 
 <script>
 const KEY = 'slovo-dnia-v1';
-const NEW_PER_DAY = 3;
+const NEW_PER_DAY = 40;
 const INTERVALS = [1, 3, 7, 14, 30, 60];
 let data = {words: []};
 let state = load();
@@ -142,8 +142,8 @@ function seededOrder(n, seed){
   for (let i = n-1; i > 0; i--){ s = (s*9301 + 49297) % 233280; const j = Math.floor(s/233280*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
   return arr;
 }
-function dayIndex(){ return Math.floor(today()/DAY); }
-function wordOfTheDay(){ const order = seededOrder(data.words.length, 2027); return data.words[order[dayIndex() % data.words.length]]; }
+const SLOT_MS = 30 * 60000; // слово змінюється кожні 30 хвилин, синхронно з віджетом
+function wordOfTheDay(){ const order = seededOrder(data.words.length, 2027); return data.words[order[Math.floor(Date.now()/SLOT_MS) % data.words.length]]; }
 
 function dueCards(){
   const t = today();

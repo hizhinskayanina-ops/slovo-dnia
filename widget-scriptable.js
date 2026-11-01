@@ -6,7 +6,6 @@
 
 const URL_WORDS = "https://hizhinskayanina-ops.github.io/slovo-dnia/words.json";
 const URL_APP = "https://hizhinskayanina-ops.github.io/slovo-dnia/";
-const HOUR = 8, MINUTE = 0;
 
 const req = new Request(URL_WORDS + "?v=" + Date.now());
 const data = await req.loadJSON();
@@ -18,28 +17,35 @@ function seededOrder(n, seed) {
   for (let i = n - 1; i > 0; i--) { s = (s * 9301 + 49297) % 233280; const j = Math.floor(s / 233280 * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; }
   return arr;
 }
-const DAY = 86400000;
-function dayIndexOf(date) { const d = new Date(date.getFullYear(), date.getMonth(), date.getDate()); return Math.floor(d.getTime() / DAY); }
+const SLOT_MIN = 30;            // нове слово кожні 30 хвилин
+const NOTIFY_FROM = 8, NOTIFY_TO = 22;  // сповіщення щогодини в цьому вікні
+const SLOT_MS = SLOT_MIN * 60000;
 const order = seededOrder(words.length, 2027);
-function wordFor(date) { return words[order[dayIndexOf(date) % words.length]]; }
+function slotOf(date) { return Math.floor(date.getTime() / SLOT_MS); }
+function wordAt(date) { return words[order[slotOf(date) % words.length]]; }
 
-const w = wordFor(new Date());
+const now = new Date();
+const w = wordAt(now);
 
-// Нагадування: наступне 8:00 зі словом того дня
-const next = new Date(); next.setHours(HOUR, MINUTE, 0, 0);
-if (next <= new Date()) next.setDate(next.getDate() + 1);
-const nw = wordFor(next);
-await Notification.removePending(["slovo-dnia"]);
-const n = new Notification();
-n.identifier = "slovo-dnia";
-n.title = nw.en + " - " + nw.uk;
-n.subtitle = nw.ex;
-n.body = nw.asoc ? "💡 " + nw.asoc : "";
-n.openURL = URL_APP;
-n.addAction("Знаю ✓", URL_APP + "?id=" + nw.id + "&grade=ok", false);
-n.addAction("Ще раз", URL_APP + "?id=" + nw.id + "&grade=again", false);
-n.setTriggerDate(next);
-await n.schedule();
+// Сповіщення: щогодини з NOTIFY_FROM до NOTIFY_TO на найближчу добу, кожне зі своїм словом
+const ids = [];
+for (let h = 0; h < 24; h++) ids.push("slovo-" + h);
+await Notification.removePending(ids);
+for (let h = NOTIFY_FROM; h <= NOTIFY_TO; h++) {
+  const t = new Date(); t.setHours(h, 0, 0, 0);
+  if (t <= now) t.setDate(t.getDate() + 1);
+  const nw = wordAt(t);
+  const n = new Notification();
+  n.identifier = "slovo-" + h;
+  n.title = nw.en + " - " + nw.uk;
+  n.subtitle = nw.ex;
+  n.body = nw.asoc ? "💡 " + nw.asoc : "";
+  n.openURL = URL_APP;
+  n.addAction("Знаю ✓", URL_APP + "?id=" + nw.id + "&grade=ok", false);
+  n.addAction("Ще раз", URL_APP + "?id=" + nw.id + "&grade=again", false);
+  n.setTriggerDate(t);
+  await n.schedule();
+}
 
 // Віджет
 const family = config.widgetFamily || "large";
@@ -64,7 +70,7 @@ if (family === "accessoryRectangular" || family === "accessoryInline" || family 
   const small = family === "small";
   wd.setPadding(big ? 22 : 16, big ? 22 : 16, big ? 20 : 14, big ? 22 : 16);
 
-  const tag = wd.addText(("слово дня · " + w.tag).toUpperCase());
+  const tag = wd.addText(("слово · " + w.tag).toUpperCase());
   tag.font = Font.semiboldSystemFont(small ? 9 : 11); tag.textColor = mint;
   wd.addSpacer(small ? 6 : 10);
 
@@ -92,8 +98,8 @@ if (family === "accessoryRectangular" || family === "accessoryInline" || family 
   wd.addSpacer();
 }
 
-// Оновлювати не частіше, ніж раз на годину
-wd.refreshAfterDate = new Date(Date.now() + 60 * 60 * 1000);
+// Оновити на межі наступного 30-хвилинного слота (iOS може трохи затримати)
+wd.refreshAfterDate = new Date((slotOf(now) + 1) * SLOT_MS);
 
 if (config.runsInWidget) Script.setWidget(wd); else await wd.presentLarge();
 Script.complete();
