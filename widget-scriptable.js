@@ -1,7 +1,7 @@
 // Слово дня - віджет для Scriptable (iPhone, безплатний застосунок Scriptable з App Store).
 // Як поставити: Scriptable → «+» → вставити цей код → назвати «Слово дня» → на екрані iPhone
 // утримати палець → «+» → Scriptable → середній розмір → обрати скрипт «Слово дня».
-// Віджет показує те саме слово дня, що й застосунок, і ставить нагадування щоранку о 8:00.
+// Віджет показує те саме слово дня, що й застосунок. Також ставить нагадування щоранку о 8:00.
 
 const URL_WORDS = "https://hizhinskayanina-ops.github.io/slovo-dnia/words.json";
 const URL_APP = "https://hizhinskayanina-ops.github.io/slovo-dnia/";
