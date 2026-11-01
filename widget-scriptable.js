@@ -96,6 +96,23 @@ if (family === "accessoryRectangular" || family === "accessoryInline" || family 
     }
   }
   wd.addSpacer();
+
+  // Дві зони-кнопки: кожна відкриває застосунок і записує оцінку цього слова
+  if (!small) {
+    const row = wd.addStack(); row.layoutHorizontally(); row.spacing = 10;
+    const mk = (label, grade) => {
+      const b = row.addStack(); b.layoutHorizontally(); b.centerAlignContent();
+      b.setPadding(big ? 10 : 7, 12, big ? 10 : 7, 12); b.cornerRadius = 12;
+      b.backgroundColor = grade === "ok" ? white : new Color("#FFFFFF", 0.18);
+      b.url = URL_APP + "?id=" + w.id + "&grade=" + grade;
+      b.addSpacer();
+      const t = b.addText(label); t.font = Font.semiboldSystemFont(big ? 15 : 13);
+      t.textColor = grade === "ok" ? emerald : white;
+      b.addSpacer();
+    };
+    mk("✗ Ще раз", "again");
+    mk("✓ Знаю", "ok");
+  }
 }
 
 // Оновити на межі наступного 30-хвилинного слота (iOS може трохи затримати)
