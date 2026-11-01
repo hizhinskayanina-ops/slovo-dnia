@@ -1,0 +1,17 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Віджет Слово дня</title>
+<style>body{font-family:-apple-system,Rubik,sans-serif;background:#F6F5F1;color:#111;margin:0;padding:20px;max-width:560px;margin:auto;line-height:1.5}h1{font-size:22px}ol{padding-left:20px}li{margin:8px 0}button{width:100%;font-size:18px;padding:16px;border:0;border-radius:14px;background:#1E4D3F;color:#fff;margin:14px 0}pre{background:#fff;border:1px solid #E3E4DE;border-radius:12px;padding:12px;font-size:11px;overflow:auto;max-height:200px}</style></head><body>
+<h1>Віджет «Слово дня» на екран iPhone</h1>
+<ol>
+<li>Постав безплатний застосунок <b>Scriptable</b> з App Store.</li>
+<li>Натисни кнопку нижче, код скопіюється.</li>
+<li>Відкрий Scriptable → «+» угорі праворуч → утримай палець у порожньому полі → <b>Вставити</b>.</li>
+<li>Натисни назву «Untitled Script» угорі → перейменуй на <b>Слово дня</b> → Done.</li>
+<li>На домашньому екрані утримай палець на порожньому місці → «+» угорі ліворуч → знайди <b>Scriptable</b> → середній розмір → Додати.</li>
+<li>Натисни на новий віджет → Script → обери <b>Слово дня</b>. Готово. Дозволь сповіщення, коли запитає.</li>
+</ol>
+<button id="copy">Скопіювати код віджета</button>
+<pre id="code">завантажую…</pre>
+<script>
+fetch('widget-scriptable.js').then(r=>r.text()).then(t=>{document.getElementById('code').textContent=t;
+document.getElementById('copy').onclick=async()=>{try{await navigator.clipboard.writeText(t);document.getElementById('copy').textContent='Скопійовано ✓'}catch(e){alert('Виділи текст нижче й скопіюй вручну')}}});
+</script></body></html>
