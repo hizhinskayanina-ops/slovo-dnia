@@ -1,7 +1,8 @@
 // Слово дня - віджет для Scriptable (iPhone, безплатний застосунок Scriptable з App Store).
 // Як поставити: Scriptable → «+» → вставити цей код → назвати «Слово дня» → на екрані iPhone
-// утримати палець → «+» → Scriptable → середній розмір → обрати скрипт «Слово дня».
+// утримати палець → «+» → Scriptable → обрати розмір → у налаштуваннях віджета Script = «Слово дня».
 // Віджет показує те саме слово дня, що й застосунок. Також ставить нагадування щоранку о 8:00.
+// Працює на всіх розмірах: малий, середній, великий і на екрані блокування.
 
 const URL_WORDS = "https://hizhinskayanina-ops.github.io/slovo-dnia/words.json";
 const URL_APP = "https://hizhinskayanina-ops.github.io/slovo-dnia/";
@@ -31,34 +32,66 @@ const nw = wordFor(next);
 await Notification.removePending(["slovo-dnia"]);
 const n = new Notification();
 n.identifier = "slovo-dnia";
-n.title = nw.en;
-n.subtitle = nw.uk;
-n.body = nw.ex;
+n.title = nw.en + " - " + nw.uk;
+n.subtitle = nw.ex;
+n.body = nw.asoc ? "💡 " + nw.asoc : "";
 n.openURL = URL_APP;
 n.setTriggerDate(next);
 await n.schedule();
 
 // Віджет
+const family = config.widgetFamily || "large";
 const emerald = new Color("#1E4D3F");
+const white = Color.white();
+const mint = new Color("#CDE8DB");
 const wd = new ListWidget();
-wd.backgroundColor = Color.white();
 wd.url = URL_APP;
-wd.setPadding(16, 16, 14, 16);
 
-const tag = wd.addText(("слово дня · " + w.tag).toUpperCase());
-tag.font = Font.mediumSystemFont(10); tag.textColor = emerald;
-wd.addSpacer(6);
-const en = wd.addText(w.en);
-en.font = Font.boldSystemFont(22); en.textColor = Color.black(); en.minimumScaleFactor = 0.6; en.lineLimit = 2;
-wd.addSpacer(3);
-const uk = wd.addText(w.uk);
-uk.font = Font.lightSystemFont(14); uk.textColor = new Color("#333333"); uk.lineLimit = 2;
-wd.addSpacer(8);
-const ex = wd.addText(w.ex);
-ex.font = Font.italicSystemFont(12); ex.textColor = new Color("#5E655F"); ex.lineLimit = 2;
+if (family === "accessoryRectangular" || family === "accessoryInline" || family === "accessoryCircular") {
+  // Екран блокування: дуже мало місця, лише слово й переклад
+  wd.setPadding(2, 4, 2, 4);
+  if (family === "accessoryInline") {
+    const t = wd.addText(w.en + " · " + w.uk); t.font = Font.mediumSystemFont(13); t.lineLimit = 1;
+  } else {
+    const en = wd.addText(w.en); en.font = Font.boldSystemFont(15); en.lineLimit = 1; en.minimumScaleFactor = 0.7;
+    const uk = wd.addText(w.uk); uk.font = Font.systemFont(12); uk.lineLimit = 2; uk.minimumScaleFactor = 0.8;
+  }
+} else {
+  wd.backgroundColor = emerald;
+  const big = family === "large";
+  const small = family === "small";
+  wd.setPadding(big ? 22 : 16, big ? 22 : 16, big ? 20 : 14, big ? 22 : 16);
+
+  const tag = wd.addText(("слово дня · " + w.tag).toUpperCase());
+  tag.font = Font.semiboldSystemFont(small ? 9 : 11); tag.textColor = mint;
+  wd.addSpacer(small ? 6 : 10);
+
+  const en = wd.addText(w.en);
+  en.font = Font.boldSystemFont(big ? 34 : small ? 20 : 26); en.textColor = white; en.minimumScaleFactor = 0.6; en.lineLimit = 2;
+  wd.addSpacer(small ? 3 : 6);
+
+  const uk = wd.addText(w.uk);
+  uk.font = Font.regularSystemFont(big ? 20 : small ? 13 : 16); uk.textColor = white; uk.lineLimit = small ? 2 : 2;
+
+  if (!small) {
+    wd.addSpacer(big ? 16 : 10);
+    const ex = wd.addText(w.ex);
+    ex.font = Font.italicSystemFont(big ? 17 : 13); ex.textColor = mint; ex.lineLimit = big ? 3 : 2;
+    if (big) {
+      const exuk = wd.addText(w.ex_uk);
+      exuk.font = Font.lightSystemFont(14); exuk.textColor = mint; exuk.lineLimit = 2;
+      if (w.asoc) {
+        wd.addSpacer(16);
+        const as = wd.addText("💡 " + w.asoc);
+        as.font = Font.regularSystemFont(14); as.textColor = white; as.lineLimit = 3;
+      }
+    }
+  }
+  wd.addSpacer();
+}
 
 // Оновлювати не частіше, ніж раз на годину
 wd.refreshAfterDate = new Date(Date.now() + 60 * 60 * 1000);
 
-if (config.runsInWidget) Script.setWidget(wd); else await wd.presentMedium();
+if (config.runsInWidget) Script.setWidget(wd); else await wd.presentLarge();
 Script.complete();

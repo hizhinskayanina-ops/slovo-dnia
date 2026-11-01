@@ -37,6 +37,8 @@
   .uk{font-size:19px;color:var(--ink);font-weight:300;margin:0 0 18px}
   .ex{background:var(--emerald-soft);border-radius:14px;padding:14px 16px;font-size:17px;line-height:1.45}
   .ex .exuk{color:var(--muted);font-size:15px;margin-top:6px;font-weight:300}
+  .asoc{margin-top:10px;padding:12px 16px;border-left:3px solid var(--emerald);border-radius:0;font-size:15px;line-height:1.45;color:var(--ink)}
+  .asoc span{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--emerald);font-weight:500;margin-bottom:4px}
   .hidden{display:none !important}
   .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
   button{font-family:Rubik,sans-serif;font-size:17px;font-weight:500;border:0;border-radius:16px;padding:16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -77,6 +79,7 @@
   <div class="en" id="en"></div>
   <div class="uk" id="uk"></div>
   <div class="ex" id="ex"><div id="exen"></div><div class="exuk" id="exuk"></div></div>
+  <div class="asoc" id="asoc"><span>💡 Гачок</span><div id="asoctext"></div></div>
   <button class="btn-reveal" id="reveal">Показати переклад</button>
   <div class="actions hidden" id="actions">
     <button class="btn-again" id="again">Ще раз</button>
@@ -169,9 +172,12 @@ function render(){
   document.getElementById('uk').textContent = w.uk;
   document.getElementById('exen').textContent = w.ex;
   document.getElementById('exuk').textContent = w.ex_uk;
+  document.getElementById('asoctext').textContent = w.asoc || '';
+  document.getElementById('asoc').classList.toggle('hidden', !w.asoc);
   const revealed = current.isNew;
   document.getElementById('uk').classList.toggle('hidden', !revealed);
   document.getElementById('ex').classList.toggle('hidden', !revealed);
+  if (!revealed) document.getElementById('asoc').classList.add('hidden');
   document.getElementById('reveal').classList.toggle('hidden', revealed);
   document.getElementById('actions').classList.toggle('hidden', !revealed);
 }
@@ -196,7 +202,7 @@ function speak(text){
   speechSynthesis.speak(u);
 }
 
-document.getElementById('reveal').onclick = () => { ['uk','ex','actions'].forEach(i => document.getElementById(i).classList.remove('hidden')); document.getElementById('reveal').classList.add('hidden'); };
+document.getElementById('reveal').onclick = () => { ['uk','ex','asoc','actions'].forEach(i => document.getElementById(i).classList.remove('hidden')); document.getElementById('reveal').classList.add('hidden'); };
 document.getElementById('ok').onclick = () => grade(true);
 document.getElementById('again').onclick = () => grade(false);
 document.getElementById('speak').onclick = () => current && speak(current.word.en + '. ' + current.word.ex);
