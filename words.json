@@ -1,5 +1,5 @@
 {
- "version": "2026-11-08",
+ "version": "2026-11-15",
  "title": "Слово дня",
  "words": [
   {
@@ -793,6 +793,51 @@
    "ex_uk": "Наступний крок - перевірити це зі своїми студентами.",
    "tag": "з чатів",
    "asoc": "next - «некст»: як кнопка «далі» в застосунку."
+  },
+  {
+   "id": 89,
+   "en": "do you mind + -ing",
+   "uk": "ви не проти, якщо…",
+   "ex": "Do you mind turning on your cameras for the next activity?",
+   "ex_uk": "Ви не проти увімкнути камери для наступної вправи?",
+   "tag": "з чатів",
+   "asoc": "mind - «майнд», розум: «чи не заважає це вашому розуму?» Після mind завжди -ing."
+  },
+  {
+   "id": 90,
+   "en": "make sure",
+   "uk": "переконатися, подбати",
+   "ex": "Make sure everyone can see the screen before we start.",
+   "ex_uk": "Переконайтеся, що всім видно екран, перш ніж почнемо.",
+   "tag": "з чатів",
+   "asoc": "make sure - «зроби певним»: як поставити галочку «шуер, точно»."
+  },
+  {
+   "id": 91,
+   "en": "first-hand sources",
+   "uk": "першоджерела",
+   "ex": "Always check first-hand sources before you trust an AI answer.",
+   "ex_uk": "Завжди перевіряйте першоджерела, перш ніж довіряти відповіді ШІ.",
+   "tag": "з чатів",
+   "asoc": "first hand - «перша рука»: інформація з перших рук, а не з третіх вуст."
+  },
+  {
+   "id": 92,
+   "en": "trend",
+   "uk": "тенденція",
+   "ex": "This trend will shape how schools use AI next year.",
+   "ex_uk": "Ця тенденція визначить, як школи використовуватимуть ШІ наступного року.",
+   "tag": "з чатів",
+   "asoc": "trend - «тренд»: як тренч, що його раптом усі носять."
+  },
+  {
+   "id": 93,
+   "en": "FOMO (fear of missing out)",
+   "uk": "страх щось пропустити",
+   "ex": "Many teachers feel FOMO about new AI tools - you don't need to try them all.",
+   "ex_uk": "Багато вчителів відчувають страх пропустити нові ШІ-інструменти - не треба пробувати всі.",
+   "tag": "з чатів",
+   "asoc": "FOMO - «фомо»: «фух, мо' пропущу?»"
   }
  ]
 }
