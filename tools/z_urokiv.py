@@ -43,7 +43,8 @@ def main():
         WORDS.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
         g = lambda *a: subprocess.run(["git", *a], cwd=HERE, capture_output=True, text=True, encoding="utf-8")
         g("add", "words.json")
-        c = g("commit", "-m", "Слова з уроків " + d["version"])
+        c = g("-c", "user.name=Yanina Hizhinska", "-c", "user.email=hizhinskayanina@gmail.com",
+              "commit", "-m", "Слова з уроків " + d["version"])
         p = g("push")
         print("commit:", (c.stdout or c.stderr).strip()[:200])
         print("push:", "ok" if p.returncode == 0 else p.stderr.strip()[:300])
