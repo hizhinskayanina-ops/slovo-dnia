@@ -118,7 +118,7 @@
   <b>Додати на екран:</b> у Safari натисни «Поділитись» (квадрат зі стрілкою) → <b>На Початковий екран</b> → Додати. Далі слово дня відкривається з іконки, як застосунок.
 </section>
 
-<p class="small">Нове слово у віджеті й сповіщеннях кожні 30 хвилин, до 40 нових на день тут. Повторення за інтервалами: 1 → 3 → 7 → 14 → 30 днів. «Ще раз» повертає слово на завтра.</p>
+<p class="small">Нове слово у віджеті й сповіщеннях кожні 30 хвилин: два з трьох - зі слів поточних уроків англійської. До 40 нових на день тут. Повторення за інтервалами: 1 → 3 → 7 → 14 → 30 днів. «Ще раз» повертає слово на завтра.</p>
 
 <script>
 const KEY = 'slovo-dnia-v1';
@@ -143,7 +143,16 @@ function seededOrder(n, seed){
   return arr;
 }
 const SLOT_MS = 30 * 60000; // слово змінюється кожні 30 хвилин, синхронно з віджетом
-function wordOfTheDay(){ const order = seededOrder(data.words.length, 2027); return data.words[order[Math.floor(Date.now()/SLOT_MS) % data.words.length]]; }
+// Слова з поля fokus (те, що зараз на уроках англійської) - у двох слотах із трьох; так само у віджеті (widget-logic.js).
+function shuffled(list, seed){ return seededOrder(list.length, seed).map(i => list[i]); }
+function buildPools(){
+  const byId = new Map(data.words.map(w => [w.id, w]));
+  const f = (data.fokus || []).filter(id => byId.has(id)), f2 = (data.fokus_dvichi || []).filter(id => byId.has(id));
+  const fSet = new Set(f);
+  return { F: [...shuffled(f, 2027), ...shuffled(f2, 2028)].map(id => byId.get(id)), G: shuffled(data.words.filter(w => !fSet.has(w.id)), 2027), fSet };
+}
+function pickAt(slot, p){ if (p.F.length && (slot % 3 !== 0 || !p.G.length)) return p.F[(slot - Math.floor(slot/3)) % p.F.length]; return p.G[Math.floor(slot/3) % p.G.length]; }
+function wordOfTheDay(){ return pickAt(Math.floor(Date.now()/SLOT_MS), buildPools()); }
 
 function dueCards(){
   const t = today();
@@ -167,8 +176,9 @@ function pickNext(){
     // спершу слово дня, якщо ще не бачене
     const wod = wordOfTheDay();
     if (!state.cards[wod.id]) return {word: wod, isNew:true};
-    const order = seededOrder(data.words.length, 2027);
-    for (const i of order){ const w = data.words[i]; if (!state.cards[w.id]) return {word: w, isNew:true}; }
+    // спершу нові слова з уроків, потім решта словника
+    const p = buildPools();
+    for (const w of [...p.F, ...p.G]){ if (!state.cards[w.id]) return {word: w, isNew:true}; }
   }
   return null;
 }
@@ -186,7 +196,7 @@ function render(){
   if (!current){ card.classList.add('hidden'); done.classList.remove('hidden'); return; }
   card.classList.remove('hidden'); done.classList.add('hidden');
   const w = current.word;
-  document.getElementById('tag').textContent = (current.isNew ? 'нове · ' : 'повторення · ') + w.tag;
+  document.getElementById('tag').textContent = (current.isNew ? 'нове · ' : 'повторення · ') + (w.tag === 'урок' ? 'з уроку' : w.tag);
   document.getElementById('en').textContent = w.en;
   document.getElementById('uk').textContent = w.uk;
   document.getElementById('exen').textContent = w.ex;

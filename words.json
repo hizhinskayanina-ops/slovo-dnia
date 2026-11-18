@@ -1,5 +1,5 @@
 {
- "version": "2026-11-15",
+ "version": "2026-11-18",
  "title": "Слово дня",
  "words": [
   {
@@ -838,6 +838,324 @@
    "ex_uk": "Багато вчителів відчувають страх пропустити нові ШІ-інструменти - не треба пробувати всі.",
    "tag": "з чатів",
    "asoc": "FOMO - «фомо»: «фух, мо' пропущу?»"
+  },
+  {
+   "id": 94,
+   "en": "settle for less",
+   "uk": "погодитися на менше",
+   "ex": "Don't settle for less than you deserve.",
+   "ex_uk": "Не погоджуйся на менше, ніж заслуговуєш.",
+   "tag": "урок",
+   "asoc": "«settle» - «сісти»: сісти на нижчий стілець і погодитися на менше."
+  },
+  {
+   "id": 95,
+   "en": "live up to expectations",
+   "uk": "виправдати очікування",
+   "ex": "The new course really lived up to our expectations.",
+   "ex_uk": "Новий курс справді виправдав наші очікування.",
+   "tag": "урок",
+   "asoc": "«up» - вгору: дотягнутися вгору до планки очікувань."
+  },
+  {
+   "id": 96,
+   "en": "feel left behind",
+   "uk": "відчувати, що відстаєш",
+   "ex": "Some teachers feel left behind when technology changes so fast.",
+   "ex_uk": "Деякі вчителі відчувають, що відстають, коли технології змінюються так швидко.",
+   "tag": "урок",
+   "asoc": "«left» - «залишений»: усі пішли вперед, а ти лишилась позаду."
+  },
+  {
+   "id": 97,
+   "en": "have it all",
+   "uk": "мати все",
+   "ex": "Nobody can have it all at the same time.",
+   "ex_uk": "Ніхто не може мати все й одразу.",
+   "tag": "урок",
+   "asoc": "«all» - «оля, все!»: усе й одразу в одних руках."
+  },
+  {
+   "id": 98,
+   "en": "take something for granted",
+   "uk": "сприймати як належне",
+   "ex": "We often take a quiet evening for granted.",
+   "ex_uk": "Ми часто сприймаємо тихий вечір як належне.",
+   "tag": "урок",
+   "asoc": "«granted» - «гарантовано»: думаєш, що це гарантовано, і перестаєш цінувати."
+  },
+  {
+   "id": 99,
+   "en": "a sense of achievement",
+   "uk": "відчуття досягнення",
+   "ex": "Finishing a hard task gives you a sense of achievement.",
+   "ex_uk": "Завершене складне завдання дає відчуття досягнення.",
+   "tag": "урок",
+   "asoc": "«achievement» - «ачівка» з ігор: відчуття, що отримала ачівку."
+  },
+  {
+   "id": 100,
+   "en": "be content with",
+   "uk": "бути задоволеною чимось",
+   "ex": "She is content with small, steady progress.",
+   "ex_uk": "Вона задоволена маленьким, але стабільним поступом.",
+   "tag": "урок",
+   "asoc": "«content» тут не «контент», а «задоволена»: задоволена своїм контентом."
+  },
+  {
+   "id": 101,
+   "en": "miss out on",
+   "uk": "пропустити, втратити нагоду",
+   "ex": "Register today so you don't miss out on the webinar.",
+   "ex_uk": "Зареєструйтеся сьогодні, щоб не пропустити вебінар.",
+   "tag": "урок",
+   "asoc": "«miss» - промахнутися: промахнулась і пропустила нагоду."
+  },
+  {
+   "id": 102,
+   "en": "involve",
+   "uk": "залучати; передбачати",
+   "ex": "This job involves helping people every day.",
+   "ex_uk": "Ця робота передбачає щоденну допомогу людям.",
+   "tag": "урок",
+   "asoc": "«in» - всередину: залучити людину всередину процесу."
+  },
+  {
+   "id": 103,
+   "en": "boundaries",
+   "uk": "кордони, межі",
+   "ex": "Healthy boundaries help teachers avoid burnout.",
+   "ex_uk": "Здорові межі допомагають учителям уникати вигорання.",
+   "tag": "урок",
+   "asoc": "«bound» - «бант»: перевʼязати свою територію бантиком - це мої межі."
+  },
+  {
+   "id": 104,
+   "en": "cashier",
+   "uk": "касир, касирка",
+   "ex": "The cashier gave me the wrong change.",
+   "ex_uk": "Касирка дала мені неправильну решту.",
+   "tag": "урок",
+   "asoc": "«cash» - готівка: людина, у якої вся готівка на касі."
+  },
+  {
+   "id": 105,
+   "en": "customers",
+   "uk": "покупці, клієнти",
+   "ex": "Happy customers come back again.",
+   "ex_uk": "Задоволені клієнти повертаються знову.",
+   "tag": "урок",
+   "asoc": "«custom» - звичка: покупці, які звикли приходити саме до тебе."
+  },
+  {
+   "id": 106,
+   "en": "annoyed",
+   "uk": "роздратований",
+   "ex": "I get annoyed when meetings start late.",
+   "ex_uk": "Мене дратує, коли зустрічі починаються із запізненням.",
+   "tag": "урок",
+   "asoc": "«annoy» - «ну-ой!»: так зітхаєш, коли щось дратує."
+  },
+  {
+   "id": 107,
+   "en": "stubborn",
+   "uk": "впертий",
+   "ex": "He is too stubborn to ask for help.",
+   "ex_uk": "Він занадто впертий, щоб попросити про допомогу.",
+   "tag": "урок",
+   "asoc": "«стаббо́рн» - «стовп-борн»: впертий, як стовп, не зрушиш."
+  },
+  {
+   "id": 108,
+   "en": "repair",
+   "uk": "ремонтувати, лагодити",
+   "ex": "We need to repair the old projector.",
+   "ex_uk": "Нам треба полагодити старий проєктор.",
+   "tag": "урок",
+   "asoc": "«re» - знову + «pair» - пара: знову скласти до пари, тобто полагодити."
+  },
+  {
+   "id": 109,
+   "en": "water pipes / heating",
+   "uk": "труби / опалення",
+   "ex": "The heating doesn't work because of the old water pipes.",
+   "ex_uk": "Опалення не працює через старі труби.",
+   "tag": "урок",
+   "asoc": "«pipe» - дудка, по якій тече вода; «heat» - жар від батареї."
+  },
+  {
+   "id": 110,
+   "en": "income / salary",
+   "uk": "дохід / зарплата",
+   "ex": "A salary is only one part of your monthly income.",
+   "ex_uk": "Зарплата - лише одна частина місячного доходу.",
+   "tag": "урок",
+   "asoc": "«income» = in + come: те, що заходить у гаманець; «salary» від «salt» - римлянам платили сіллю."
+  },
+  {
+   "id": 111,
+   "en": "catch on",
+   "uk": "стати популярним, прижитися",
+   "ex": "The idea caught on quickly in other schools.",
+   "ex_uk": "Ідея швидко прижилася в інших школах.",
+   "tag": "урок",
+   "asoc": "«catch» - зловити: ідею зловили й підхопили всі."
+  },
+  {
+   "id": 112,
+   "en": "kindness",
+   "uk": "доброта",
+   "ex": "A small act of kindness can change someone's day.",
+   "ex_uk": "Маленький добрий вчинок може змінити комусь день.",
+   "tag": "урок",
+   "asoc": "«kind» - добрий + «ness» = доброта."
+  },
+  {
+   "id": 113,
+   "en": "bill",
+   "uk": "рахунок",
+   "ex": "Can we have the bill, please?",
+   "ex_uk": "Можна нам рахунок, будь ласка?",
+   "tag": "урок",
+   "asoc": "«bill» - «білий» папірець із сумою, який приносять наприкінці."
+  },
+  {
+   "id": 114,
+   "en": "agree to",
+   "uk": "погодитися щось зробити",
+   "ex": "The team agreed to meet every Monday.",
+   "ex_uk": "Команда домовилася зустрічатися щопонеділка.",
+   "tag": "урок",
+   "asoc": "«agree» - «а, гріє!»: ідея гріє - погоджуюсь. Після agree - to + дія."
+  },
+  {
+   "id": 115,
+   "en": "self-worth",
+   "uk": "самоцінність",
+   "ex": "Your self-worth doesn't depend on likes.",
+   "ex_uk": "Твоя самоцінність не залежить від лайків.",
+   "tag": "урок",
+   "asoc": "«worth» - вартість: self + worth = скільки ти вартуєш у власних очах."
+  },
+  {
+   "id": 116,
+   "en": "femininity",
+   "uk": "жіночність",
+   "ex": "For her, femininity means softness and strength together.",
+   "ex_uk": "Для неї жіночність - це мʼякість і сила водночас.",
+   "tag": "урок",
+   "asoc": "«femina» латиною - жінка: фемінність."
+  },
+  {
+   "id": 117,
+   "en": "a piece of advice",
+   "uk": "порада (одна)",
+   "ex": "Let me give you a piece of advice: start small.",
+   "ex_uk": "Дозволь дати тобі пораду: почни з малого.",
+   "tag": "урок",
+   "asoc": "«piece» - шматочок: шматочок поради. Advice без -s і без a."
+  },
+  {
+   "id": 118,
+   "en": "relevant skills",
+   "uk": "відповідні навички",
+   "ex": "The course helps teachers build relevant skills for AI.",
+   "ex_uk": "Курс допомагає вчителям розвинути відповідні навички для роботи з ШІ.",
+   "tag": "урок",
+   "asoc": "«relevant» - «реле»: навички, що вмикаються саме для цієї роботи."
+  },
+  {
+   "id": 119,
+   "en": "learning outcomes",
+   "uk": "результати навчання",
+   "ex": "Every lesson should have clear learning outcomes.",
+   "ex_uk": "Кожен урок має мати чіткі результати навчання.",
+   "tag": "урок",
+   "asoc": "«out» + «come» - те, що виходить назовні після навчання."
+  },
+  {
+   "id": 120,
+   "en": "seem to",
+   "uk": "здаватися",
+   "ex": "The students seem to enjoy the new format.",
+   "ex_uk": "Здається, студентам подобається новий формат.",
+   "tag": "урок",
+   "asoc": "«seem» - «сім»: сім разів здалося. Після seem - to + дія."
+  },
+  {
+   "id": 121,
+   "en": "integrity",
+   "uk": "доброчесність, цілісність",
+   "ex": "Academic integrity matters even more with AI tools.",
+   "ex_uk": "З ШІ-інструментами академічна доброчесність важить ще більше.",
+   "tag": "урок",
+   "asoc": "«integer» - ціле число: цілісна, чесна людина."
+  },
+  {
+   "id": 122,
+   "en": "in front of",
+   "uk": "перед (кимось, чимось)",
+   "ex": "I feel calm in front of a big audience now.",
+   "ex_uk": "Тепер я почуваюся спокійно перед великою аудиторією.",
+   "tag": "урок",
+   "asoc": "«front» - фронт, передня лінія: стояти попереду, перед людьми."
   }
- ]
+ ],
+ "fokus": [
+  94,
+  95,
+  96,
+  97,
+  98,
+  99,
+  100,
+  101,
+  102,
+  103,
+  104,
+  105,
+  106,
+  107,
+  108,
+  109,
+  110,
+  111,
+  112,
+  113,
+  114,
+  115,
+  48,
+  116,
+  117,
+  118,
+  119,
+  120,
+  121,
+  122
+ ],
+ "fokus_dvichi": [
+  102,
+  103,
+  104,
+  105,
+  106,
+  107,
+  108,
+  109,
+  110,
+  111,
+  112,
+  113,
+  114,
+  115,
+  48,
+  116,
+  117,
+  118,
+  119,
+  120,
+  121,
+  122
+ ],
+ "fokus_tema": "1b 1b Career choices: jobs that involve helping people; verb patterns (-ing чи to). Домашка на дошці: Vocabulary jobs; w"
 }
